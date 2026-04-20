@@ -3,10 +3,10 @@ export async function userModel() {
   const conexion = await dbConfig();
   const Schema = conexion.Schema;
   const users = new Schema({
-    nombre: String,
-    apellidos: String,
-    Edad: Number,
-    Direccion: String,
+    nombre: { type: String, required: true},
+    apellidos: { type: String, required: true},
+    Edad: { type: Number, required: true},
+    Direccion: { type: String, required: true},
   });
 
   const userModelo =
