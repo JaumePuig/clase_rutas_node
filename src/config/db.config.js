@@ -1,5 +1,7 @@
-import "dotenv/config";
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export async function dbConfig() {
   try {
@@ -7,6 +9,7 @@ export async function dbConfig() {
     console.log("conectado console");
     return connection;
   } catch (e) {
-    console.log(e.message);
+    console.log('Error en conexión a MongoDB:', e);
+    return null;
   }
 }
