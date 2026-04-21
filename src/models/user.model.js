@@ -6,12 +6,14 @@ export async function userModel() {
   const users = new Schema({
     nombre: { type: String, required: true },
     apellidos: { type: String, required: true },
-    Edad: { type: Number, required: true },
-    Direccion: { type: String, required: true },
+    email: { type: String, required: true, unique: true  },
+    password: { type: String, required: true },
   });
 
+  users.index({ email: 1 }, { unique: true });
+
   const userModelo =
-    (await conexion.models["users"]) || conexion.model("users", users, "users");
-  await userModelo.init();
+    (await conexion.models["usuarios"]) || conexion.model("usuarios", users, "usuarios");
+  //await userModelo.init();
   return userModelo;
 }
