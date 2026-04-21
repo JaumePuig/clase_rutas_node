@@ -1,5 +1,6 @@
 import { userModel } from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import { createToken } from "./token.service.js";
 
 const saltRounds = 10;
 
@@ -37,20 +38,41 @@ export async function loginService(userData) {
     const usuario = await userModel();
     const foundUser = await usuario.findOne({ email });
     if (!foundUser)
-      return { status: 404, message: "Usuario o clave incorrecto" };
+      return { status: 401, message: "Usuario o clave incorrecto" };
 
     const compare = await bcrypt.compare(password, foundUser.password);
-    if (!compare)
-      return { status: 404, message: "Usuario o clave incorrecto" };
+    if (!compare) return { status: 401, message: "Usuario o clave incorrecto" };
+
+    const userInfo = {
+      nombre: foundUser.nombre,
+      apellidos: foundUser.apellidos,
+      email: foundUser.email,
+    };
 
     return {
       status: 200,
-      message: foundUser,
+      message: { foundUser, token: createToken(userInfo) },
     };
   } catch (e) {
     return {
-      status: 401,
+      status: 403,
       message: e.message,
     };
   }
+}
+
+export async function userInfoService(userData) {
+  const { email, password } = userData;
+  const usuario = await userModel();
+  const foundUser = await usuario.findOne({ email });
+  if (!foundUser) return { status: 404, message: "Usuario o clave incorrecto" };
+  const userInfo = {
+    nombre: foundUser.nombre,
+    apellidos: foundUser.apellidos,
+    email: foundUser.email,
+  };
+  return {
+    status: 200,
+    message: userInfo,
+  };
 }
