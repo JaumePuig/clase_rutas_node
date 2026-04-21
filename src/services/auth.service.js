@@ -3,17 +3,17 @@ import bcrypt from "bcrypt";
 
 const saltRounds = 10;
 
-export async function registerUserService(nombre, apellidos, Edad, Direccion) {
+export async function registerUserService(userData) {
   try {
     const usuario = await userModel();
 
     //ciframos direccion
-    const hashedDireccion = await bcrypt.hash(Direccion, saltRounds);
+    const hashedDireccion = await bcrypt.hash(userData.Direccion, saltRounds);
 
     const nuevoUsuario = await new usuario({
-      nombre: nombre,
-      apellidos: apellidos,
-      Edad: Edad,
+      nombre: userData.nombre,
+      apellidos: userData.apellidos,
+      Edad: userData.Edad,
       Direccion: hashedDireccion,
     });
 
