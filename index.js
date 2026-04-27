@@ -2,9 +2,12 @@ import express from 'express';
 import userRouter from './src/routes/user.routes.js';
 import multer from 'multer';
 import {imgMiddleware} from './src/middleware/img.middleware.js';
+import cors from 'cors';
 
 const api = express();
 api.use(express.json());
+api.use(cors());
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
