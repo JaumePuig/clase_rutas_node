@@ -62,7 +62,7 @@ export async function loginService(userData) {
 }
 
 export async function userInfoService(userData) {
-  const { email, password } = userData;
+  const { email } = userData;
   const usuario = await userModel();
   const foundUser = await usuario.findOne({ email });
   if (!foundUser) return { status: 404, message: "Usuario o clave incorrecto" };
